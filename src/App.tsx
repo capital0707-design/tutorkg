@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
 import type { SearchFilters } from './lib/types';
 
-import header from './components/header';
+import Header from './components/header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
