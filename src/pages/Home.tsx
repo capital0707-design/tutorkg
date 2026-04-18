@@ -49,7 +49,8 @@ const POPULAR_SUBJECTS = [
 const FEATURES = [
   {
     icon: Monitor,
-    title: 'Онлайн занятия',
+    title: 'Онлайн занятия 
+      Встроенная видео платформа',
     desc: 'Занимайтесь с лучшими репетиторами',
     color: 'text-blue-600',
     bg: 'bg-blue-50',
