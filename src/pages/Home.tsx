@@ -38,7 +38,7 @@ const HOW_IT_WORKS = [
 const POPULAR_SUBJECTS = [
   { name: 'Английский язык', icon: '🇬🇧', count: 7 },
   { name: 'Математика', icon: '📐', count: 6 },
-  { name: 'Физика', icon: '⚡', count: 3 },
+  { name: 'Физика', icon: '⚡', count: 8 },
   { name: 'Программирование', icon: '💻', count: 12 },
   { name: 'Подготовка к ОРТ', icon: '📝', count: 5 },
   { name: 'Химия', icon: '🧪', count: 5 },
