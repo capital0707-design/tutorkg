@@ -50,7 +50,7 @@ export default function Register({ onNavigate, onSuccess }: RegisterProps) {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Ошибка регистрации';
       if (msg.includes('already registered')) {
-        setError('Этот email уже зарегистрирован');
+        setError('Этот e-mail уже зарегистрирован');
       } else {
         setError(msg);
       }
@@ -67,7 +67,7 @@ export default function Register({ onNavigate, onSuccess }: RegisterProps) {
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Регистрация успешна!</h2>
-          <p className="text-gray-500 text-sm">Перенаправляем в ваш профиль...</p>
+          <p className="text-gray-500 text-sm">Перенаправляем в Ваш профиль...</p>
         </div>
       </div>
     );
@@ -157,7 +157,7 @@ export default function Register({ onNavigate, onSuccess }: RegisterProps) {
           </form>
 
           <p className="mt-4 text-xs text-gray-400 text-center">
-            После регистрации вы сможете заполнить профиль, добавить предметы и цены
+            После регистрации Вы сможете заполнить профиль, добавить предметы и цены
           </p>
 
           <div className="mt-6 text-center text-sm text-gray-500">
