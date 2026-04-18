@@ -36,14 +36,14 @@ const HOW_IT_WORKS = [
 ];
 
 const POPULAR_SUBJECTS = [
-  { name: 'Английский язык', icon: '🇬🇧',  },
-  { name: 'Математика', icon: '📐', count: 38 },
-  { name: 'Физика', icon: '⚡', count: 22 },
-  { name: 'Программирование', icon: '💻', count: 19 },
-  { name: 'Подготовка к ОРТ', icon: '📝', count: 31 },
-  { name: 'Химия', icon: '🧪', count: 17 },
-  { name: 'Немецкий язык', icon: '🇩🇪', count: 14 },
-  { name: 'История', icon: '📚', count: 16 },
+  { name: 'Английский язык', icon: '🇬🇧', count: 7 },
+  { name: 'Математика', icon: '📐', count: 4 },
+  { name: 'Физика', icon: '⚡', count: 3 },
+  { name: 'Программирование', icon: '💻', count: 12 },
+  { name: 'Подготовка к ОРТ', icon: '📝', count: 2 },
+  { name: 'Химия', icon: '🧪', count: 1 },
+  { name: 'Немецкий язык', icon: '🇩🇪', count: 3 },
+  { name: 'История', icon: '📚', count: 2 },
 ];
 
 const FEATURES = [
