@@ -154,8 +154,9 @@ INSERT INTO subject_categories (name, name_en, sort_order) VALUES
   ('Школьные предметы', 'School Subjects', 2),
   ('Математика и точные науки', 'Math & Exact Sciences', 3),
   ('Университетские предметы', 'University Subjects', 4),
-  ('Музыка и искусство', 'Music & Arts', 5),
-  ('Подготовка к экзаменам', 'Exam Preparation', 6)
+  ('Подготовка к экзаменам', 'Exam Preparation', 5)
+  ('Логопед', 'Speech therapist', 6)
+  
 ON CONFLICT DO NOTHING;
 
 -- Seed subjects
@@ -182,11 +183,8 @@ BEGIN
     (v_lang_id, 'Китайский язык', 'Chinese', 3),
     (v_lang_id, 'Русский язык', 'Russian', 4),
     (v_lang_id, 'Кыргызский язык', 'Kyrgyz', 5),
-    (v_lang_id, 'Французский язык', 'French', 6),
-    (v_lang_id, 'Испанский язык', 'Spanish', 7),
-    (v_lang_id, 'Арабский язык', 'Arabic', 8),
-    (v_lang_id, 'Турецкий язык', 'Turkish', 9),
-    (v_lang_id, 'Японский язык', 'Japanese', 10)
+    (v_lang_id, 'Турецкий язык', 'Turkish', 6),
+    (v_lang_id, 'Японский язык', 'Japanese', 7)
   ON CONFLICT DO NOTHING;
 
   -- School Subjects
