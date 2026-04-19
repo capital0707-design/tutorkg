@@ -232,8 +232,8 @@ BEGIN
 
  -- Speech therapist
   INSERT INTO subjects (category_id, name, name_en, sort_order) VALUES
-    (v_uni_id, 'Логопед-дефектолог', 'Speech therapist-speech pathologist', 1),
-    (v_uni_id, 'Коррекция звукопроизношения', 'Correction of sound reproduction', 2),
-    (v_uni_id, 'Подготовка к школе - (логопедическая)', 'Preparation for school - (speech therapy)', 3),
+    (v_spee_id, 'Логопед-дефектолог', 'Speech therapist-speech pathologist', 1),
+    (v_spee_id, 'Коррекция звукопроизношения', 'Correction of sound reproduction', 2),
+    (v_spee_id, 'Подготовка к школе - (логопедическая)', 'Preparation for school - (speech therapy)', 3),
   ON CONFLICT DO NOTHING;
 END $$;
