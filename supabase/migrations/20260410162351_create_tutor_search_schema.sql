@@ -166,15 +166,16 @@ DECLARE
   v_school_id uuid;
   v_math_id uuid;
   v_uni_id uuid;
-  v_arts_id uuid;
   v_exam_id uuid;
+  v_spee_id uuid;
+
 BEGIN
   SELECT id INTO v_lang_id FROM subject_categories WHERE name_en = 'Foreign Languages';
   SELECT id INTO v_school_id FROM subject_categories WHERE name_en = 'School Subjects';
   SELECT id INTO v_math_id FROM subject_categories WHERE name_en = 'Math & Exact Sciences';
   SELECT id INTO v_uni_id FROM subject_categories WHERE name_en = 'University Subjects';
-  SELECT id INTO v_arts_id FROM subject_categories WHERE name_en = 'Music & Arts';
   SELECT id INTO v_exam_id FROM subject_categories WHERE name_en = 'Exam Preparation';
+  SELECT id INTO v_spee_id FROM subject_categories WHERE name_en = 'Speech therapist';
 
   -- Foreign Languages
   INSERT INTO subjects (category_id, name, name_en, sort_order) VALUES
