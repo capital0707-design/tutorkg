@@ -337,7 +337,7 @@ export default function Dashboard({ user }: DashboardProps) {
                 />
               )}
               {field(
-                'Цена за час (сом)',
+                'Почасовая ставка (сом)',
                 <DollarSign className="w-4 h-4 text-gray-400" />,
                 <input
                   type="number"
