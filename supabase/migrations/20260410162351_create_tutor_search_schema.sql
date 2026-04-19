@@ -219,14 +219,6 @@ BEGIN
     (v_uni_id, 'Психология', 'Psychology', 5)
   ON CONFLICT DO NOTHING;
 
-  -- Music & Arts
-  INSERT INTO subjects (category_id, name, name_en, sort_order) VALUES
-    (v_arts_id, 'Фортепиано', 'Piano', 1),
-    (v_arts_id, 'Гитара', 'Guitar', 2),
-    (v_arts_id, 'Вокал', 'Vocals', 3),
-    (v_arts_id, 'Рисование', 'Drawing', 4),
-    (v_arts_id, 'Скрипка', 'Violin', 5)
-  ON CONFLICT DO NOTHING;
 
   -- Exam Preparation
   INSERT INTO subjects (category_id, name, name_en, sort_order) VALUES
@@ -235,5 +227,12 @@ BEGIN
     (v_exam_id, 'Подготовка к TOEFL', 'TOEFL Preparation', 3),
     (v_exam_id, 'Подготовка к SAT', 'SAT Preparation', 4),
     (v_exam_id, 'Подготовка к ЕГЭ', 'EGE Preparation', 5)
+  ON CONFLICT DO NOTHING;
+
+ -- Speech therapist
+  INSERT INTO subjects (category_id, name, name_en, sort_order) VALUES
+    (v_uni_id, 'Логопед-дефектолог', 'Speech therapist-speech pathologist', 1),
+    (v_uni_id, 'Коррекция звукопроизношения', 'Correction of sound reproduction', 2),
+    (v_uni_id, 'Подготовка к школе - (логопедическая)', 'Preparation for school - (speech therapy)', 3),
   ON CONFLICT DO NOTHING;
 END $$;
