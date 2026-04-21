@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ChevronDown, Monitor, Home, SlidersHorizontal } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Импортируем данные из нашего нового файла
+import { categories as localCategories, subjects as localSubjects } from '../data/data';
 import type { SubjectCategory, Subject, SearchFilters } from '../lib/types';
 import { BISHKEK_DISTRICTS } from '../lib/types';
 
@@ -10,10 +11,9 @@ interface SearchFormProps {
 }
 
 export default function SearchForm({ onSearch, compact = false }: SearchFormProps) {
-  const [categories, setCategories] = useState<SubjectCategory[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [categories, setCategories] = useState<SubjectCategory[]>(localCategories);
+  const [subjects, setSubjects] = useState<Subject[]>(localSubjects);
   const [showFilters, setShowFilters] = useState(false);
-
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -21,27 +21,14 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
   const [isOnline, setIsOnline] = useState<boolean | null>(null);
   const [isHome, setIsHome] = useState<boolean | null>(null);
 
+  // Фильтруем предметы при выборе категории локально
   useEffect(() => {
-    const fetchCategories = async () => {
-      const { data } = await supabase
-        .from('subject_categories')
-        .select('*')
-        .order('sort_order');
-      if (data) setCategories(data);
-    };
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      let query = supabase.from('subjects').select('*').order('sort_order');
-      if (selectedCategory) {
-        query = query.eq('category_id', selectedCategory);
-      }
-      const { data } = await query;
-      if (data) setSubjects(data);
-    };
-    fetchSubjects();
+    if (selectedCategory) {
+      const filtered = localSubjects.filter(sub => sub.category_id === selectedCategory);
+      setSubjects(filtered);
+    } else {
+      setSubjects(localSubjects);
+    }
     setSelectedSubject('');
   }, [selectedCategory]);
 
@@ -129,10 +116,8 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
           <SlidersHorizontal className="w-4 h-4" />
           {showFilters ? 'Скрыть фильтры' : 'Дополнительные фильтры'}
         </button>
-
         <button
           onClick={handleSearch}
-          onKeyDown={handleKeyDown}
           className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm"
         >
           <Search className="w-4 h-4" />
@@ -154,7 +139,6 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
               className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">
               Формат занятий
@@ -168,8 +152,7 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
                   className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                 />
                 <span className="flex items-center gap-1.5 text-sm text-gray-700">
-                  <Monitor className="w-4 h-4 text-blue-500" />
-                  Онлайн
+                  <Monitor className="w-4 h-4 text-blue-500" /> Онлайн
                 </span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
@@ -180,8 +163,7 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
                   className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                 />
                 <span className="flex items-center gap-1.5 text-sm text-gray-700">
-                  <Home className="w-4 h-4 text-emerald-500" />
-                  Офлайн/Выезд на дом
+                  <Home className="w-4 h-4 text-emerald-500" /> Офлайн/Выезд на дом
                 </span>
               </label>
             </div>
