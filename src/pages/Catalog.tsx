@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Users, Loader2, SearchX } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+// Импортируем наши локальные данные
+import { myData } from '../data/data';
 import TutorCard from '../components/TutorCard';
 import SearchForm from '../components/SearchForm';
 import type { TutorProfile, SearchFilters } from '../lib/types';
@@ -17,65 +18,43 @@ export default function Catalog({ onViewTutor, initialFilters }: CatalogProps) {
     initialFilters || { subject_id: '', district: '', price_max: 0, is_online: null, is_home: null }
   );
 
-  const fetchTutors = useCallback(async (f: SearchFilters) => {
+  const fetchTutors = useCallback((f: SearchFilters) => {
     setLoading(true);
-    try {
-      let query = supabase
-        .from('tutor_profiles')
-        .select(`
-          *,
-          tutor_subjects (
-            subjects (
-              id,
-              name,
-              category_id
-            )
-          )
-        `)
-        .eq('is_active', true)
-        .order('is_verified', { ascending: false })
-        .order('created_at', { ascending: false });
+    
+    // Имитируем небольшую задержку для естественности, но берем данные из myData
+    setTimeout(() => {
+      let result = [...(myData as unknown as TutorProfile[])];
 
+      // Фильтр по району
       if (f.district) {
-        query = query.eq('district', f.district);
+        result = result.filter(t => t.district === f.district);
       }
+
+      // Фильтр по цене
       if (f.price_max > 0) {
-        query = query.lte('price_per_hour', f.price_max);
+        result = result.filter(t => t.price_per_hour <= f.price_max);
       }
+
+      // Фильтр по формату (онлайн)
       if (f.is_online === true) {
-        query = query.eq('is_online', true);
+        result = result.filter(t => t.is_online === true);
       }
+
+      // Фильтр по формату (выезд на дом)
       if (f.is_home === true) {
-        query = query.eq('is_home', true);
+        result = result.filter(t => t.is_home === true);
       }
 
-      const { data, error } = await query;
-      if (error) throw error;
-
-      type RawTutor = typeof data extends (infer T)[] | null ? T : never;
-
-      let result: TutorProfile[] = (data || []).map((t: RawTutor) => {
-        const raw = t as Record<string, unknown>;
-        const rawSubjects = raw.tutor_subjects as Array<{ subjects: { id: string; name: string; category_id: string } | null }> | null;
-        const subjects = (rawSubjects || [])
-          .map((ts) => ts.subjects)
-          .filter((s): s is { id: string; name: string; category_id: string } => s !== null);
-        return {
-          ...(raw as unknown as TutorProfile),
-          subjects,
-        };
-      });
-
+      // Фильтр по предмету
       if (f.subject_id) {
-        result = result.filter((t) =>
+        result = result.filter((t) => 
           t.subjects?.some((s) => s.id === f.subject_id)
         );
       }
 
       setTutors(result);
-    } finally {
       setLoading(false);
-    }
+    }, 300); 
   }, []);
 
   useEffect(() => {
