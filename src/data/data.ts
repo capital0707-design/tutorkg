@@ -19,4 +19,15 @@ export const myData: Item[] = [
     contact: "@ainura_davletova",
     photo: "https://placeholder.com"
   }
+
+  export const categories = [
+  { id: '1', name: 'Языки', sort_order: 1 },
+  { id: '2', name: 'Математика', sort_order: 2 }
+];
+
+export const subjects = [
+  { id: 'sub1', category_id: '1', name: 'Русский язык', sort_order: 1 },
+  { id: 'sub2', category_id: '1', name: 'Кыргызский язык', sort_order: 2 },
+  { id: 'sub3', category_id: '2', name: 'Алгебра', sort_order: 1 }
+];
 ];
