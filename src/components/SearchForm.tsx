@@ -139,22 +139,51 @@ export default function SearchForm({ onSearch, compact = false }: SearchFormProp
         </button>
       </div>
 
-      {showFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
-              Макс. цена (сом/час)
-            </label>
-            <input
-              type="number"
-              value={priceMax || ''}
-              onChange={(e) => setPriceMax(Number(e.target.value))}
-              placeholder="Без ограничений"
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-      )}
+ {showFilters && (
+  <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
+    {/* Фильтр цены */}
+    <div>
+      <label className="block text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">
+        Макс. цена (сом/час)
+      </label>
+      <input
+        type="number"
+        value={priceMax || ''}
+        onChange={(e) => setPriceMax(Number(e.target.value))}
+        placeholder="Без ограничений"
+        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
     </div>
-  );
-}
+
+    {/* Фильтр формата занятий */}
+    <div className="sm:col-span-2">
+      <label className="block text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">
+        Формат занятий
+      </label>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isOnline === true}
+            onChange={(e) => setIsOnline(e.target.checked ? true : null)}
+            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+          />
+          <span className="flex items-center gap-1.5 text-sm text-gray-700">
+            <Monitor className="w-4 h-4 text-blue-500" /> Онлайн
+          </span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isHome === true}
+            onChange={(e) => setIsHome(e.target.checked ? true : null)}
+            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+          />
+          <span className="flex items-center gap-1.5 text-sm text-gray-700">
+            <Home className="w-4 h-4 text-emerald-500" /> Офлайн/Выезд на дом
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+)}
