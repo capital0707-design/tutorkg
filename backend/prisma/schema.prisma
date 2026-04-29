@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env(DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require &pgbouncer=true")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  passwordHash String
+  name         String?
+  role         String         @default("STUDENT") // STUDENT, TUTOR, ADMIN
+  avatar       String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  tutorProfile TutorProfile?
+}
+
+model TutorProfile {
+  id           Int            @id @default(autoincrement())
+  userId       Int            @unique
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bio          String?
+  experience   Int?
+  subjects     String?
+  formats      String?
+  pricePerHour Int?
+  rating       Float?         @default(0)
+  reviewCount  Int?           @default(0)
+  isVerified   Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  bookings     Booking[]
+}
+
+model Booking {
+  id          Int            @id @default(autoincrement())
+  tutorId     Int
+  studentName String
+  phone       String
+  date        String
+  time        String
+  message     String?        @default("")
+  status      String         @default("PENDING")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  tutor       TutorProfile   @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@index([status])
+}
+
+model Subject {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  category  String?
+  createdAt DateTime @default(now())
+}
