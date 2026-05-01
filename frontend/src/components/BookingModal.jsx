@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config/api';
 
 const BookingModal = ({ isOpen, onClose, tutor }) => {
   if (!isOpen || !tutor) return null;
@@ -74,7 +75,7 @@ const BookingModal = ({ isOpen, onClose, tutor }) => {
 
     setLoading(true);
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/bookings', {
+      const res = await fetch('fetch(`${API_URL}/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, tutorId: tutor.id })

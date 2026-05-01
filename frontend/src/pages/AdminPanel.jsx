@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LessonModal from '../components/LessonModal';
+import { API_URL } from '../config/api';
 
 const AdminPanel = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,7 +10,7 @@ const AdminPanel = () => {
   const [activeLesson, setActiveLesson] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/bookings')
+    fetch('fetch(`${API_URL}/api/bookings')
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки заявок');
         return res.json();
@@ -20,7 +21,7 @@ const AdminPanel = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/bookings/${id}`, {
+      const res = await fetch(`${API_URL}/api/bookings/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })

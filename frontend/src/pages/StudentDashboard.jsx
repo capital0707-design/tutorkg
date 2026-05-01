@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LessonModal from '../components/LessonModal';
+import { API_URL } from '../config/api';
 
 const StudentDashboard = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ const StudentDashboard = () => {
     setUser(JSON.parse(stored));
 
     // В продакшене здесь будет запрос с фильтром по email/userId: /api/bookings?studentEmail=...
-    fetch('http://127.0.0.1:5000/api/bookings')
+    fetch(`${API_URL}/bookings`)
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => {
         const confirmed = Array.isArray(data) ? data.filter(b => b.status === 'CONFIRMED') : [];

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config/api';
 
 const SUBJECTS_BY_CATEGORY = {
   "Языки": [
@@ -25,7 +26,7 @@ const Home = () => {
 
   // Загружаем всех репетиторов один раз при открытии
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/tutors')
+    fetch('`${API_URL}/api/tutors')
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => { setTutors(Array.isArray(data) ? data : []); setLoading(false); })
       .catch(() => { setTutors([]); setLoading(false); });

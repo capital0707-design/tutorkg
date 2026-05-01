@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config/api';
+
 
 const SearchForm = ({ onSearch }) => {
   const [formData, setFormData] = useState({ subject: '', format: 'any', maxBudget: '' });
   const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/subjects')
+    fetch('`${API_URL}/api/subjects')
       .then(res => res.json())
       .then(data => setSubjects(Array.isArray(data) ? data : []))
       .catch(err => console.error('Ошибка загрузки предметов:', err));

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config/api';
 
 const SUBJECTS_BY_CATEGORY = {
   "Языки": [
@@ -85,8 +86,9 @@ const Register = () => {
         }
       }
 
-      const res = await fetch('http://127.0.0.1:5000/api/auth/register', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      const res = await fetch('fetch(`${API_URL}/api/auth/register', {
+        method: 'POST',
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);

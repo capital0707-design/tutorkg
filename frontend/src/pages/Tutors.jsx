@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config/api';
 
 const SUBJECTS_BY_CATEGORY = {
   "Языки": [
@@ -22,7 +23,7 @@ const Tutors = () => {
   const [subject, setSubject] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/tutors')
+    fetch(`${API_URL}/tutors`)
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки каталога');
         return res.json();

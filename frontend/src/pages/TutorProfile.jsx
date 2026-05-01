@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import BookingModal from '../components/BookingModal';
+import { API_URL } from '../config/api';
 
 const TutorProfile = () => {
   const { id } = useParams();
@@ -10,7 +11,7 @@ const TutorProfile = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/api/tutors/${id}`)
+    fetch(`${API_URL}/tutors/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('Репетитор не найден');
         return res.json();
