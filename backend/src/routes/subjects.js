@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { prisma } = require('../lib/prisma.cjs');
-const { protect, admin } = require('../middleware/auth');
+const { protect, verifyAdmin } = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
   try {
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', protect, admin, async (req, res) => {
+router.post('/', protect, verifyAdmin, async (req, res) => {
   try {
     const { name, category } = req.body;
     if (!name || !name.trim()) {
@@ -39,7 +39,7 @@ router.post('/', protect, admin, async (req, res) => {
   }
 });
 
-router.delete('/:id', protect, admin, async (req, res) => {
+router.delete('/:id', protect, verifyAdmin, async (req, res) => {
   try {
     await prisma.subject.update({
       where: { id: parseInt(req.params.id) },
