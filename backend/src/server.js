@@ -10,10 +10,14 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*', methods: ['GET', 'POST'] } });
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://tutorkg.vercel.app',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean), // Убирает undefined/null
   credentials: true
 }));
-app.use(express.json());
 
 // Socket.io (чистый, без ошибок)
 io.on('connection', (socket) => {
