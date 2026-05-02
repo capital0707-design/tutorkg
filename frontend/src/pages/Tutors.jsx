@@ -23,7 +23,15 @@ const Tutors = () => {
   const [subject, setSubject] = useState('');
 
   useEffect(() => {
-    fetch(`${API_URL}/tutors`)
+  // 🔹 ОТЛАДКА: выводим значение API_URL в консоль
+  console.log('=== DEBUG API_URL ===');
+  console.log('API_URL из config:', API_URL);
+  console.log('import.meta.env.VITE_API_URL:', import.meta.env.VITE_API_URL);
+  console.log('=====================');
+
+  const fetchTutors = async () => {
+    // ... дальше идёт твой существующий код с fetch
+  fetch(`${API_URL}/tutors`)
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки каталога');
         return res.json();
