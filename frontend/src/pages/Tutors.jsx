@@ -22,23 +22,30 @@ const Tutors = () => {
   const [category, setCategory] = useState('');
   const [subject, setSubject] = useState('');
 
-  useEffect(() => {
+useEffect(() => {
   // 🔹 ОТЛАДКА: выводим значение API_URL в консоль
   console.log('=== DEBUG API_URL ===');
   console.log('API_URL из config:', API_URL);
   console.log('import.meta.env.VITE_API_URL:', import.meta.env.VITE_API_URL);
+  console.log('Полный URL запроса:', `${API_URL}/tutors`);
   console.log('=====================');
 
   const fetchTutors = async () => {
-    // ... дальше идёт твой существующий код с fetch
-  fetch(`${API_URL}/tutors`)
-      .then(res => {
-        if (!res.ok) throw new Error('Ошибка загрузки каталога');
-        return res.json();
-      })
-      .then(data => { setTutors(Array.isArray(data) ? data : []); setLoading(false); })
-      .catch(err => { setError(err.message); setLoading(false); });
-  }, []);
+    try {
+      const response = await fetch(`${API_URL}/tutors`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      setTutors(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchTutors();
+}, []); // ← закрывающая скобка массива зависимостей
 
   // ⚡ Умная и устойчивая фильтрация
   const filteredTutors = useMemo(() => {
