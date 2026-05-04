@@ -10,6 +10,7 @@ import TutorProfile from './pages/TutorProfile';
 import Tutors from './pages/Tutors';
 import AdminPanel from './pages/AdminPanel';
 import StudentDashboard from './pages/StudentDashboard'; // ← Новый импорт
+import TutorDetails from './pages/TutorDetails';
 
 function App() {
   const [user, setUser] = useState(() => {
