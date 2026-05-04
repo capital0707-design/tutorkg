@@ -127,7 +127,7 @@ useEffect(() => {
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTutors.map(tutor => (
-              <Link key={tutor.id} to={`/tutors/${tutor.id}`} className="block bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition border border-gray-100 cursor-pointer group">
+            <Link key={tutor.id} to={`/tutors/${tutor.id}`} state={{ tutor }} className="block bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition border border-gray-100 cursor-pointer group">
                 {tutor.subjects && (
                   <span className="inline-block px-2 py-0.5 mb-2 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">
                     {tutor.subjects.split(',')[0].trim()}
