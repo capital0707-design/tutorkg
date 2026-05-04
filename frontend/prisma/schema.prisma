@@ -12,7 +12,7 @@ model User {
   email        String         @unique
   passwordHash String
   name         String?
-  role         String         @default("STUDENT") // STUDENT, TUTOR, ADMIN
+  role         String         @default("STUDENT")
   avatar       String?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -35,31 +35,4 @@ model TutorProfile {
   isVerified   Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-
-  bookings     Booking[]
-}
-
-model Booking {
-  id          Int            @id @default(autoincrement())
-  tutorId     Int
-  studentName String
-  phone       String
-  date        String
-  time        String
-  message     String?        @default("")
-  status      String         @default("PENDING")
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  tutor       TutorProfile   @relation(fields: [tutorId], references: [id], onDelete: Cascade)
-
-  @@index([tutorId])
-  @@index([status])
-}
-
-model Subject {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  category  String?
-  createdAt DateTime @default(now())
 }
