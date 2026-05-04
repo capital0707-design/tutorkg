@@ -115,6 +115,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/tutors" element={<Tutors />} />
           <Route path="/tutors/:id" element={<TutorProfile />} />
+          <Route path="/tutors/:id" element={<TutorDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<StudentDashboard />} /> {/* ← Маршрут кабинета */}
