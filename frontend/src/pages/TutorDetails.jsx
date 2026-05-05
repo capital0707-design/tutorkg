@@ -14,32 +14,48 @@ export default function TutorDetails() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (tutor) { setLoading(false); return; }
+    if (tutor) { setStatus('success'); return; }
+    setStatus('loading');
 
-    const fetchTutor = async () => {
+    const load = async () => {
       try {
-        console.log('📡 Fetch:', `${API_BASE}/tutors`);
-        const res = await fetch(`${API_BASE}/tutors`);
-
-        // 🔒 ЗАЩИТА: если сервер вернул HTML (404/ошибка Vercel), не ломаем JSON.parse
-        const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) {
-          const preview = await res.text();
-          throw new Error(`API вернул HTML. Начало ответа: ${preview.slice(0, 100)}`);
+        console.log('🔍 Searching for ID:', id, '(type:', typeof id + ')');
+        
+        const res = await fetch('https://tutorkg.vercel.app/api/tutors');
+        const raw = await res.json();
+        
+        console.log('📦 API response:', raw);
+        console.log('📦 Is array?', Array.isArray(raw));
+        
+        // Нормализуем: если массив - берём, если объект - ищем массив внутри
+        const list = Array.isArray(raw) ? raw : 
+                    raw?.data || raw?.tutors || Object.values(raw).find(v => Array.isArray(v)) || [];
+        
+        console.log('📋 Normalized list:', list);
+        
+        // Ищем по всем возможным полям (сравнение как строки!)
+        const found = list.find(t => {
+          const ids = [t.id, t.userId, t.tutorId, t.user?.id, t.user?.userId].filter(Boolean);
+          return ids.some(fid => String(fid) === String(id));
+        });
+        
+        console.log('✅ Found:', found);
+        
+        if (!found) {
+          console.warn('❌ Not found. Available IDs:', list.map(t => t.id || t.userId || t.tutorId));
+          throw new Error('Репетитор не найден. Проверь консоль для деталей.');
         }
-
-        const data = await res.json();
-        const found = data.find(t => String(t.id) === String(id));
-        if (!found) throw new Error('Репетитор не найден в базе');
         
         setTutor(found);
-      } catch (err) {
-        console.error('❌ TutorDetails:', err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        setStatus('success');
+      } catch (e) {
+        console.error('💥 Error:', e.message);
+        setErrorMsg(e.message);
+        setStatus('error');
       }
     };
+    load();
+  }, [id, tutor]);
 
     fetchTutor();
   }, [id, tutor]);
