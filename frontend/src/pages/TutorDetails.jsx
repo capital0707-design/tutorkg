@@ -2,9 +2,6 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-// 🔹 ЖЁСТКИЙ АДРЕС (обходим все проблемы с .env и Vite)
-const API_BASE = 'https://tutorkg.vercel.app/api';
-
 export default function TutorDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,59 +11,39 @@ export default function TutorDetails() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (tutor) { setStatus('success'); return; }
-    setStatus('loading');
+    if (tutor) {
+      setLoading(false);
+      return;
+    }
 
-    const load = async () => {
+    const fetchTutor = async () => {
       try {
-        console.log('🔍 Searching for ID:', id, '(type:', typeof id + ')');
-        
         const res = await fetch('https://tutorkg.vercel.app/api/tutors');
-        const raw = await res.json();
-        
-        console.log('📦 API response:', raw);
-        console.log('📦 Is array?', Array.isArray(raw));
-        
-        // Нормализуем: если массив - берём, если объект - ищем массив внутри
-        const list = Array.isArray(raw) ? raw : 
-                    raw?.data || raw?.tutors || Object.values(raw).find(v => Array.isArray(v)) || [];
-        
-        console.log('📋 Normalized list:', list);
-        
-        // Ищем по всем возможным полям (сравнение как строки!)
-        const found = list.find(t => {
-          const ids = [t.id, t.userId, t.tutorId, t.user?.id, t.user?.userId].filter(Boolean);
-          return ids.some(fid => String(fid) === String(id));
-        });
-        
-        console.log('✅ Found:', found);
-        
-        if (!found) {
-          console.warn('❌ Not found. Available IDs:', list.map(t => t.id || t.userId || t.tutorId));
-          throw new Error('Репетитор не найден. Проверь консоль для деталей.');
+        const data = await res.json();
+        const found = data.find(t => String(t.id) === String(id));
+        if (found) {
+          setTutor(found);
+        } else {
+          setError('Репетитор не найден');
         }
-        
-        setTutor(found);
-        setStatus('success');
       } catch (e) {
-        console.error('💥 Error:', e.message);
-        setErrorMsg(e.message);
-        setStatus('error');
+        setError('Ошибка загрузки: ' + e.message);
+      } finally {
+        setLoading(false);
       }
     };
-    load();
-  }, [id, tutor]);
 
     fetchTutor();
   }, [id, tutor]);
 
-  if (loading) return <div className="p-8 text-center text-gray-600">Загрузка...</div>;
-  
+  if (loading) {
+    return <div className="p-8 text-center text-gray-600">Загрузка...</div>;
+  }
+
   if (error || !tutor) {
     return (
       <div className="p-8 max-w-md mx-auto text-center bg-white rounded-xl shadow mt-12">
-        <p className="text-red-600 font-semibold mb-2">⚠️ Ошибка загрузки</p>
-        <p className="text-sm text-gray-500 mb-4">{error}</p>
+        <p className="text-red-600 font-semibold mb-2">⚠️ {error || 'Репетитор не найден'}</p>
         <button onClick={() => navigate('/tutors')} className="text-blue-600 underline">
           ← Вернуться к каталогу
         </button>
