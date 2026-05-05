@@ -3,25 +3,66 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export default function TutorDetails() {
-console.log('🔥 TUTORDetails v2 LOADED - NO FETCH VERSION');
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // 🔹 Берём данные ТОЛЬКО из state (никаких fetch!)
-  const tutor = location.state?.tutor;
+  const [tutor, setTutor] = useState(location.state?.tutor || null);
+  const [loading, setLoading] = useState(!location.state?.tutor);
+  const [error, setError] = useState(null);
 
-  // 🔹 Если данных нет — показываем понятное сообщение
-  if (!tutor) {
+  useEffect(() => {
+    // Если данные уже есть — ничего не делаем
+    if (tutor) {
+      setLoading(false);
+      return;
+    }
+
+    // 🔹 Резервный запрос: один параметр, один ответ
+    const fetchTutor = async () => {
+      try {
+        // Запрашиваем список с фильтром по ID (работает с текущим бэкендом)
+        const res = await fetch(`/api/tutors?id=${id}`);
+        
+        // 🔒 Защита от HTML-ответов
+        const ct = res.headers.get('content-type');
+        if (!ct || !ct.includes('application/json')) {
+          const preview = await res.text();
+          throw new Error(`Не JSON-ответ. Тип: ${ct}. Начало: ${preview.slice(0, 100)}`);
+        }
+
+        const data = await res.json();
+        // Находим репетитора по ID (сравнение как строки)
+        const found = data.find(t => String(t.id) === String(id));
+        if (!found) throw new Error('Репетитор не найден в ответе');
+        
+        setTutor(found);
+      } catch (e) {
+        console.error('TutorDetails fetch error:', e);
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTutor();
+  }, [id, tutor]);
+
+  // 🔄 Загрузка
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-green-50 flex items-center justify-center">
+        <p className="text-gray-600">Загрузка...</p>
+      </div>
+    );
+  }
+
+  // ❌ Ошибка или не найдено
+  if (error || !tutor) {
     return (
       <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
         <div className="bg-white p-6 rounded-xl shadow text-center max-w-md">
-          <p className="text-gray-600 mb-4">
-            Данные репетитора не загружены.
-          </p>
-          <p className="text-sm text-gray-400 mb-6">
-            Пожалуйста, перейдите на эту страницу из каталога репетиторов.
-          </p>
+          <p className="text-red-500 mb-2">⚠️ Не удалось загрузить данные</p>
+          <p className="text-gray-500 text-sm mb-4">{error || 'Репетитор не найден'}</p>
           <button
             onClick={() => navigate('/tutors')}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
@@ -33,7 +74,7 @@ console.log('🔥 TUTORDetails v2 LOADED - NO FETCH VERSION');
     );
   }
 
-  // 🔹 Если данные есть — рендерим карточку
+  // ✅ Успех: рендерим карточку
   return (
     <div className="min-h-screen bg-green-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
