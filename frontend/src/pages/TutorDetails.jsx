@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export default function TutorDetails() {
+console.log('🔥 TUTORDetails v2 LOADED - NO FETCH VERSION');
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
