@@ -7,34 +7,44 @@ export default function TutorDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Берём данные из state (если переданы через Link)
+  // Берём данные из state (если переданы через <Link state={{ tutor }}>)
   const [tutor, setTutor] = useState(location.state?.tutor || null);
   const [loading, setLoading] = useState(!location.state?.tutor);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Если данные уже есть — ничего не делаем
-    if (tutor) {
-      setLoading(false);
-      return;
-    }
+    if (tutor) { setLoading(false); return; }
 
-    // 🔹 Прямой запрос — никаких переменных, только строка
     const load = async () => {
       try {
+        // 🔹 Прямой относительный запрос — работает на Vercel 100%
         const res = await fetch('/api/tutors');
         const data = await res.json();
         
-        // 🔹 Ищем по id, сравнивая как строки (универсально)
-        const found = data.find(t => String(t.id) === String(id));
+        // 🔹 Ищем репетитора: сравниваем как строки + проверяем все возможные поля
+        const found = data.find(t => {
+          // Собираем все возможные ID из объекта
+          const possibleIds = [t.id, t.userId, t.tutorId, t.user?.id, t.user?.userId].filter(Boolean);
+          // Сравниваем каждый как строку с id из URL
+          return possibleIds.some(fid => String(fid) === String(id));
+        });
         
         if (found) {
           setTutor(found);
         } else {
+          // Для отладки: выводим доступные ID в консоль
+          console.warn('⚠️ Tutor not found. URL id:', id);
+          console.warn('📦 Available IDs:', data.map(t => ({ 
+            id: t.id, 
+            userId: t.userId, 
+            tutorId: t.tutorId,
+            name: t.user?.name || t.name 
+          })));
           setError('Репетитор не найден');
         }
       } catch (e) {
-        setError('Ошибка: ' + e.message);
+        console.error('💥 Fetch error:', e);
+        setError('Ошибка загрузки: ' + e.message);
       } finally {
         setLoading(false);
       }
@@ -42,14 +52,14 @@ export default function TutorDetails() {
     load();
   }, [id, tutor]);
 
-  if (loading) return <div className="p-8 text-center">Загрузка...</div>;
+  if (loading) return <div className="p-8 text-center text-gray-600">Загрузка...</div>;
 
   if (error || !tutor) {
     return (
       <div className="p-8 max-w-md mx-auto text-center">
         <p className="text-red-600 mb-4">{error || 'Репетитор не найден'}</p>
         <button onClick={() => navigate('/tutors')} className="text-blue-600 underline">
-          ← Назад
+          ← Вернуться к каталогу
         </button>
       </div>
     );
@@ -67,7 +77,9 @@ export default function TutorDetails() {
         <div>Рейтинг: <b>{tutor.rating || 'Новичок'}</b></div>
       </div>
       <p className="text-gray-700 mb-6">{tutor.bio || 'Нет описания'}</p>
-      <button className="w-full bg-blue-600 text-white py-3 rounded font-semibold">Записаться</button>
+      <button className="w-full bg-blue-600 text-white py-3 rounded font-semibold hover:bg-blue-700 transition">
+        Записаться на занятие
+      </button>
     </div>
   );
 }
