@@ -1,2 +1,2 @@
-// frontend/src/config/api.js
-export const API_URL = '/api'; // относительный путь
+// 🔹 Простой относительный путь для Vercel
+export const API_URL = '/api';
