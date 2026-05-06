@@ -15,36 +15,28 @@ export default function TutorDetails() {
   useEffect(() => {
     if (tutor) { setLoading(false); return; }
 
-    const load = async () => {
+     const load = async () => {
       try {
-        // 🔹 Прямой относительный запрос — работает на Vercel 100%
         const res = await fetch('/api/tutors');
-        const data = await res.json();
         
-        // 🔹 Ищем репетитора: сравниваем как строки + проверяем все возможные поля
-        const found = data.find(t => {
-          // Собираем все возможные ID из объекта
-          const possibleIds = [t.id, t.userId, t.tutorId, t.user?.id, t.user?.userId].filter(Boolean);
-          // Сравниваем каждый как строку с id из URL
-          return possibleIds.some(fid => String(fid) === String(id));
-        });
+        // 🔒 Проверяем, что сервер вернул JSON, а не HTML
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) {
+          const preview = await res.text();
+          throw new Error(`API вернул HTML вместо JSON. Начало: ${preview.slice(0, 100)}`);
+        }
+        
+        const data = await res.json();
+        const found = data.find(t => String(t.id) === String(id));
         
         if (found) {
           setTutor(found);
         } else {
-          // Для отладки: выводим доступные ID в консоль
-          console.warn('⚠️ Tutor not found. URL id:', id);
-          console.warn('📦 Available IDs:', data.map(t => ({ 
-            id: t.id, 
-            userId: t.userId, 
-            tutorId: t.tutorId,
-            name: t.user?.name || t.name 
-          })));
           setError('Репетитор не найден');
         }
       } catch (e) {
-        console.error('💥 Fetch error:', e);
-        setError('Ошибка загрузки: ' + e.message);
+        console.error('💥 TutorDetails error:', e);
+        setError(e.message);
       } finally {
         setLoading(false);
       }
