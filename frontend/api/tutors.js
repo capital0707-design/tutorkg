@@ -1,19 +1,12 @@
 // frontend/api/tutors.js
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Метод не разрешён' });
-  }
+  res.setHeader('Content-Type', 'application/json');
+  
+  // 🔹 Тестовые данные (чтобы убедиться, что роутинг работает)
+  const mockData = [
+    { id: 1, userId: 1, name: "Анна Иванова", subjects: "Математика", bio: "Подготовка к ЕГЭ", experience: 5, pricePerHour: 1500, formats: "Онлайн", rating: 4.8 }
+  ];
 
-  try {
-    const tutors = await prisma.tutorProfile.findMany({
-      include: { user: { select: { name: true, email: true } } }
-    });
-    res.status(200).json(tutors);
-  } catch (err) {
-    console.error('Tutors API error:', err);
-    res.status(500).json({ error: 'Ошибка загрузки репетиторов' });
-  }
+  // ⚠️ Позже заменим на реальный запрос к Prisma. Сейчас проверяем, что Vercel отдаёт JSON.
+  res.status(200).json(mockData);
 }
