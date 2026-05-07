@@ -1,5 +1,4 @@
-// frontend/src/pages/Masters.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORIES, DISTRICTS } from '../config/masters';
 
@@ -9,18 +8,24 @@ export default function Masters() {
   const [filterDist, setFilterDist] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // 🔹 Гарантированный фикс белого текста в выпадающих списках
+  useLayoutEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `select option { color: #111827 !important; background-color: #ffffff !important; }`;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
   useEffect(() => {
     const fetchMasters = async () => {
       setLoading(true);
       try {
-        // 🔹 РЕАЛЬНЫЙ ЗАПРОС К БАЗЕ (Работает на Vercel)
         const params = new URLSearchParams();
         if (filterCat) params.append('category', filterCat);
         if (filterDist) params.append('district', filterDist);
-        
+
         const res = await fetch(`/api/masters?${params.toString()}`);
         const data = await res.json();
-        
         setMasters(Array.isArray(data) ? data : []);
       } catch (e) {
         console.error('Ошибка загрузки мастеров:', e);
@@ -34,25 +39,24 @@ export default function Masters() {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">🔧 Найти мастера в Бишкеке</h1>
-      
+
       <div className="flex flex-wrap gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
-        <select 
-<select
-  value={filterCat}
-  onChange={e => setFilterCat(e.target.value)}
-  className="p-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 [&>option]:text-gray-900 [&>option]:bg-white"
->
-  <option value="">Все категории</option>
-  {CATEGORIES.map(c => (
-    <option key={c.id} value={c.label}>{c.label}</option>
-  ))}
-</select>
-        
-        <select 
-  value={filterDist} 
-  onChange={e => setFilterDist(e.target.value)} 
-  className="p-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 [&>option]:text-gray-900 [&>option]:bg-white"
->
+        <select
+          value={filterCat}
+          onChange={e => setFilterCat(e.target.value)}
+          className="p-2 border rounded text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Все категории</option>
+          {CATEGORIES.map(c => (
+            <option key={c.id} value={c.label}>{c.label}</option>
+          ))}
+        </select>
+
+        <select
+          value={filterDist}
+          onChange={e => setFilterDist(e.target.value)}
+          className="p-2 border rounded text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
           <option value="">Все районы</option>
           {DISTRICTS.map(d => (
             <option key={d} value={d}>{d}</option>
@@ -67,9 +71,9 @@ export default function Masters() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {masters.map(m => (
-            <Link 
-              key={m.id} 
-              to={`/masters/${m.id}`} 
+            <Link
+              key={m.id}
+              to={`/masters/${m.id}`}
               className="block bg-white p-5 rounded-xl shadow hover:shadow-md transition"
             >
               <div className="flex justify-between items-start mb-2">
