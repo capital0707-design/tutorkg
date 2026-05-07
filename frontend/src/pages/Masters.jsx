@@ -37,10 +37,11 @@ export default function Masters() {
       
       <div className="flex flex-wrap gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
         <select 
-          value={filterCat} 
-          onChange={e => setFilterCat(e.target.value)} 
-          className="p-2 border rounded"
-        >
+       <select 
+  value={filterCat} 
+  onChange={e => setFilterCat(e.target.value)} 
+  className="p-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
           <option value="">Все категории</option>
           {CATEGORIES.map(c => (
             <option key={c.id} value={c.label}>{c.label}</option>
@@ -48,10 +49,11 @@ export default function Masters() {
         </select>
         
         <select 
-          value={filterDist} 
-          onChange={e => setFilterDist(e.target.value)} 
-          className="p-2 border rounded"
-        >
+        <select 
+  value={filterDist} 
+  onChange={e => setFilterDist(e.target.value)} 
+  className="p-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
           <option value="">Все районы</option>
           {DISTRICTS.map(d => (
             <option key={d} value={d}>{d}</option>
