@@ -69,6 +69,7 @@ function App() {
               </>
             ) : (
               <>
+                <Link to="/masters" className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition">🔧 Мастера</Link>
                 <Link to="/tutors" className="text-gray-700 hover:text-blue-600 font-medium transition">Репетиторы</Link>
                 <Link to="/login" className="text-gray-700 hover:text-blue-600 font-medium transition">Вход</Link>
                 <Link to="/register" className="text-gray-700 hover:text-blue-600 font-medium transition">Регистрация</Link>
