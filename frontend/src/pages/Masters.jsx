@@ -77,10 +77,10 @@ export default function Masters() {
               className="block bg-white p-5 rounded-xl shadow hover:shadow-md transition"
             >
               <div className="flex justify-between items-start mb-2">
-                <h2 className="font-bold text-lg">{m.name}</h2>
-                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                  {m.category}
-                </span>
+              <h2 className="font-bold text-lg break-words min-w-0 pr-2">{m.name}</h2>
+              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded shrink-0 whitespace-nowrap">
+              {m.category}
+                  </span>
               </div>
               <p className="text-gray-600 text-sm mb-3">📍 {m.district} район</p>
               <div className="flex flex-wrap gap-2">

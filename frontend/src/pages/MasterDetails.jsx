@@ -42,7 +42,7 @@ export default function MasterDetails() {
       <div className="bg-white rounded-xl shadow p-6">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{master.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 break-words min-w-0">{master.name}</h1>
             <p className="text-gray-500 mt-1">📍 {master.district} район, {master.city || 'Бишкек'}</p>
           </div>
           <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
