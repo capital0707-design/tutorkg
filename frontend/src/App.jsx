@@ -11,6 +11,8 @@ import Tutors from './pages/Tutors';
 import AdminPanel from './pages/AdminPanel';
 import StudentDashboard from './pages/StudentDashboard'; // ← Новый импорт
 import TutorDetails from './pages/TutorDetails';
+import Masters from './pages/Masters';
+import MasterDetails from './pages/MasterDetails';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -124,6 +126,8 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/tutor-guide" element={<TutorGuide />} />
+          <Route path="/masters" element={<Masters />} />
+          <Route path="/masters/:id" element={<MasterDetails />} />
           <Route path="*" element={
             <div className="text-center py-20 bg-white rounded-xl shadow mt-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Страница не найдена</h2>

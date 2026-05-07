@@ -8,31 +8,49 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  email        String         @unique
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
   passwordHash String
   name         String?
-  role         String         @default("STUDENT")
+  role         String   @default("STUDENT")
   avatar       String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   tutorProfile TutorProfile?
+  masters      Master[]      @relation("UserMasters")
 }
 
 model TutorProfile {
-  id           Int            @id @default(autoincrement())
-  userId       Int            @unique
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   bio          String?
   experience   Int?
   subjects     String?
   formats      String?
   pricePerHour Int?
-  rating       Float?         @default(0)
-  reviewCount  Int?           @default(0)
-  isVerified   Boolean        @default(false)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  rating       Float?   @default(0)
+  reviewCount  Int?     @default(0)
+  isVerified   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Master {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  name         String
+  category     String // "Кулинария" | "Ремонт и техника" | "Творчество"
+  skills       String[] // ["Выпечка тортов", "Электрика", "Музыка"]
+  city         String   @default("Бишкек")
+  district     String // "Первомайский" | "Свердловский" | "Октябрьский" | "Ленинский"
+  phone        String
+  photoUrl     String?
+  rating       Float    @default(0)
+  reviewsCount Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], name: "UserMasters")
 }
