@@ -20,8 +20,9 @@ export default function Masters() {
         const data = await res.json();
         
         // 🔹 Отладка: смотрим в консоль
+        console.log('✅ MasterDetails ЗАГРУЗИЛСЯ, id:', id);
         console.log('✅ Masters loaded:', data);
-        
+         
         setMasters(Array.isArray(data) ? data : []);
       } catch (e) {
         console.error('❌ Fetch error:', e);

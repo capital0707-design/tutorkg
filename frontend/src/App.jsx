@@ -129,13 +129,20 @@ function App() {
           <Route path="/tutor-guide" element={<TutorGuide />} />
           <Route path="/masters" element={<Masters />} />
           <Route path="/masters/:id" element={<MasterDetails />} />
-          <Route path="*" element={
-            <div className="text-center py-20 bg-white rounded-xl shadow mt-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Страница не найдена</h2>
-              <Link to="/" className="text-blue-600 hover:underline">Вернуться на главную</Link>
-            </div>
-          } />
-        </Routes>
+     <Routes>
+  {/* ... твои другие страницы (Home, Tutors и т.д.) ... */}
+
+  <Route path="/masters" element={<Masters />} />
+  <Route path="/masters/:id" element={<MasterDetails />} />
+
+  {/* 404 строго в конце */}
+  <Route path="*" element={
+    <div className="text-center py-20 bg-white rounded-xl shadow mt-10">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">Страница не найдена</h2>
+      <Link to="/" className="text-blue-600 hover:underline">Вернуться на главную</Link>
+    </div>
+  } />
+</Routes>
       </main>
 
       {/* Футер */}
