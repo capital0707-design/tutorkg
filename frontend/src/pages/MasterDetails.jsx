@@ -102,5 +102,6 @@ export default function Masters() {
         </div>
       )}
     </div>
+   export default MasterDetails;
   );
 }
